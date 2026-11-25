@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "botcomm"
-version = "0.1.0"
+version = "0.20261125.2"
 description = "Python SDK for building BotComm bots"
 readme = "README.md"
 license = "MIT"
