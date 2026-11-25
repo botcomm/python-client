@@ -75,7 +75,7 @@ Writes are rate limited per session and per bot; a `429` is retried once after t
 - `await bot.stop()` — close the stream and stop background tasks.
 - `await bot.send(session_id, content, silent=False, subject="")` — post a message into a session; returns the created `Message`.
 - `await bot.broadcast(content, keyboard=None, silent=False, subject="")` — one message to each connected account’s oldest chat as a background job; returns a `Broadcast` with `total`/`sent`/`failed`/`done`, poll it with `await bot.broadcast_status(id)`.
-- `await bot.register_settings([SettingField(key, label, type, description, options, default)])` — publish a per-session settings form (`toggle`, `select`, `text`, `time`); users edit it in the bot's profile. Values arrive on every `Session.settings` (defaults filled) and, on change, as `SessionSettings` on `bot.settings`; `await bot.set_settings(session_id, {key: value})` changes them for the user.
+- `await bot.register_settings([SettingField(key, label, type, description, options, default)])` — publish a per-session settings form (`toggle`, `select`, `text`, `time`); users edit it in chat settings. Values arrive on every `Session.settings` (defaults filled) and, on change, as `SessionSettings` on `bot.settings`; `await bot.set_settings(session_id, {key: value})` changes them for the user.
 - `await bot.send_keyboard(session_id, content, options)` — post a message with one-tap answer options, see [Keyboards](#keyboards); returns the created `Message`.
 - `await bot.edit(session_id, message_id, content=None, keyboard=None)` — change a message the bot sent (progressive replies, status updates); returns the updated `Message` with `edit_ts`. An already answered keyboard cannot be replaced (`APIError` 409).
 - `await bot.delete(session_id, message_id)` — delete a message the bot sent.
@@ -134,7 +134,7 @@ After `await bot.run()`, use `await bot.set_online_status_visible(True)` to show
 
 ## Receive-only mode and collections
 
-Use input mode `none` for a receive-only chat. Session settings remain available; user messages, commands, and keyboard answers are rejected. Publish native session collections with `register_collections`, the `collection_requests` queue, and `respond_collection`. Register the schema before enabling `none`. Persist and atomically compare/increment list revisions on mutations, reject expired requests, and return results outside chat history.
+Use input mode `none` for a receive-only chat. The composer is hidden. Users can still answer buttons, respond to cards, react to messages, and change session settings. Publish native session collections with `register_collections`, the `collection_requests` queue, and `respond_collection`. Register the schema before enabling `none`. Persist and atomically compare/increment list revisions on mutations, reject expired requests, and return results outside chat history.
 
 ## Streaming replies and reactions
 
